@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker - Dashboard</title>
+    <link rel="stylesheet" href="css/css.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Navbar -->
+        <div class="navbar">
+            <h1 id="user-name">Hi, User</h1>
+            <div class="navbar-buttons">
+                <a href="add-expense.html">
+                    <button id="add-expense-btn" class="add-btn">Add</button>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Circle Container with Circular Progress Bar -->
+        <div class="circle-container">
+            <div class="circle">
+                <svg class="progress-ring" width="150" height="150">
+                    <circle
+                        class="progress-ring__circle"
+                        stroke="#4CAF50"
+                        stroke-width="8"
+                        fill="transparent"
+                        r="70"
+                        cx="75"
+                        cy="75"
+                    />
+                </svg>
+                <h2 id="total-spent">₹0</h2>
+            </div>
+            <p>Spent in <strong id="current-month">October</strong></p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button id="categories-btn" class="center-button">Categories</button>
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="transactions">
+            <h2>Recent Transactions</h2>
+            <div id="transactions-list" class="transactions-list">
+                <!-- Transaction items will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories Modal -->
+    <div id="categories-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close" id="close-categories-modal">&times;</span>
+            <h2><a href="categories.html">Expenses by Category</a></h2>
+            <div id="categories-list">
+                <!-- Categories summary will be appended here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
