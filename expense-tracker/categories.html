@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/categories.css">
+    <title>Expense Categories</title>
+</head>
+<body>
+    <header>
+        <h1>Categories</h1>
+        <nav>
+            <a href="index.html">Back to Main</a>
+        </nav>
+    </header>
+    
+    <main>
+        <h2>Total Expenses by Category</h2>
+        <ul id="category-list"></ul>
+
+        <h3>Filter by Category:</h3>
+        <select id="category-select">
+            <option value="all">All</option>
+            <option value="food">Food</option>
+            <option value="travel">Travel</option>
+            <option value="fashion">Fashion</option>
+            <option value="other">Other</option>
+        </select>
+        <button id="filter-btn" class="categories-btn">Filter</button>
+
+    </main>
+    <style>
+        .circle-container {
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.circle {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+}
+
+.progress-ring__circle {
+    stroke-dasharray: 440; /* Circumference: 2 * π * r (r=70) ≈ 440 */
+    stroke-dashoffset: 440;
+    transition: stroke-dashoffset 0.35s, stroke 0.35s;
+}
+
+.circle h2 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: #fff;
+}
+
+.circle-container p {
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+    </style>
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.app {
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+    background-color: #1c1c1e;
+    border-radius: 20px;
+    position: relative;
+}
+
+    </style>
+    <style>
+        /* categories.css */
+
+/* ======================== */
+/* Reset and Base Styles */
+/* ======================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.app {
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+    background-color: #1c1c1e;
+    border-radius: 20px;
+    position: relative;
+}
+
+/* ======================== */
+/* Navbar Styles */
+/* ======================== */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 24px;
+    color: #fff;
+}
+
+nav a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.back-btn {
+    background-color: #3a3a3c;
+    border: none;
+    padding: 10px 16px;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 14px;
+}
+
+.back-btn:hover {
+    background-color: #505053;
+}
+
+/* ======================== */
+/* Circle Container and Progress Bar */
+/* ======================== */
+.circle-container {
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.circle {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+}
+
+.progress-ring__circle {
+    stroke-dasharray: 440; /* Circumference: 2 * π * r (r=70) ≈ 440 */
+    stroke-dashoffset: 440;
+    transition: stroke-dashoffset 0.35s, stroke 0.35s;
+}
+
+.circle h2 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: #fff;
+}
+
+.circle-container p {
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+/* ======================== */
+/* Categories Summary Styles */
+/* ======================== */
+.categories-summary {
+    background-color: #2c2c2e;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.categories-summary h2 {
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.categories-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.category-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #3a3a3c;
+}
+
+.category-item:last-child {
+    border-bottom: none;
+}
+
+.category-item span {
+    display: block;
+    font-size: 16px;
+}
+
+/* ======================== */
+/* Filter Section Styles */
+/* ======================== */
+main h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+#category-select {
+    width: 100%;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    background-color: #3a3a3c;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+#filter-btn {
+    width: 100%;
+    background-color: #4CAF50;
+    border: none;
+    padding: 12px 20px;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#filter-btn:hover {
+    background-color: #45a049;
+}
+
+/* ======================== */
+/* Category Colors */
+/* ======================== */
+.category-Food {
+    color: #FF6347; /* Tomato */
+}
+
+.category-Travel {
+    color: #1E90FF; /* Dodger Blue */
+}
+
+.category-Fashion {
+    color: #FFD700; /* Gold */
+}
+
+.category-Entertainment {
+    color: #FF69B4; /* Hot Pink */
+}
+
+.category-Utilities {
+    color: #32CD32; /* Lime Green */
+}
+
+.category-Others {
+    color: #A9A9A9; /* Dark Gray */
+}
+
+/* ======================== */
+/* Responsive Design */
+/* ======================== */
+@media (max-width: 500px) {
+    .app {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .circle {
+        width: 120px;
+        height: 120px;
+    }
+
+    .progress-ring {
+        width: 120px;
+        height: 120px;
+    }
+
+    .progress-ring__circle {
+        r: 50;
+        cx: 60;
+        cy: 60;
+        stroke-dasharray: 314; /* 2 * π * 50 ≈ 314 */
+        stroke-dashoffset: 314;
+    }
+
+    .circle h2 {
+        font-size: 20px;
+    }
+
+    .categories-summary {
+        padding: 15px;
+    }
+
+    .categories-summary h2 {
+        font-size: 18px;
+    }
+
+    .category-item span {
+        font-size: 14px;
+    }
+
+    #category-select {
+        font-size: 14px;
+    }
+
+    #filter-btn {
+        font-size: 14px;
+        padding: 10px 16px;
+    }
+}
+
+    </style>
+    <style>
+        .categories-summary {
+    background-color: #2c2c2e;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.categories-summary h2 {
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.categories-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.category-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #3a3a3c;
+}
+
+.category-item:last-child {
+    border-bottom: none;
+}
+
+.category-item span {
+    display: block;
+    font-size: 16px;
+}
+
+    </style>
+    <style>
+        main h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+#category-select {
+    width: 100%;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    background-color: #3a3a3c;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+#filter-btn {
+    width: 100%;
+    background-color: #4CAF50;
+    border: none;
+    padding: 12px 20px;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#filter-btn:hover {
+    background-color: #45a049;
+}
+
+    </style>
+    <style>
+        @media (max-width: 500px) {
+    .app {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .circle {
+        width: 120px;
+        height: 120px;
+    }
+
+    .progress-ring {
+        width: 120px;
+        height: 120px;
+    }
+
+    .progress-ring__circle {
+        r: 50;
+        cx: 60;
+        cy: 60;
+        stroke-dasharray: 314; /* 2 * π * 50 ≈ 314 */
+        stroke-dashoffset: 314;
+    }
+
+    .circle h2 {
+        font-size: 20px;
+    }
+
+    .categories-summary {
+        padding: 15px;
+    }
+
+    .categories-summary h2 {
+        font-size: 18px;
+    }
+
+    .category-item span {
+        font-size: 14px;
+    }
+
+    #category-select {
+        font-size: 14px;
+    }
+
+    #filter-btn {
+        font-size: 14px;
+        padding: 10px 16px;
+    }
+}
+
+    </style>
+    <style>
+        /* categories.css */
+
+/* Categories Button Styles */
+.categories-btn {
+    background-color: #3a3a3c;
+    border: none;
+    padding: 10px 16px;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 14px;
+}
+
+.categories-btn:hover {
+    background-color: #505053;
+}
+
+    </style>
+    <style>
+        /* categories.css */
+
+/* Back Button Styles */
+.back-btn {
+    background-color: #3a3a3c;
+    border: none;
+    padding: 10px 16px;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 14px;
+    text-decoration: none; /* Remove underline from the link */
+    display: inline-block; /* Ensure it behaves like a button */
+}
+
+.back-btn:hover {
+    background-color: #505053;
+}
+
+    </style>
+    <style>
+        /* categories.css */
+
+/* Header Styles */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 28px; /* Increased font size for prominence */
+    color: #fff;
+}
+
+nav a.back-btn {
+    /* Inherits styles from .back-btn */
+}
+
+    </style>
+    <style>
+        /* categories.css */
+
+/* Filter Section Styles */
+main h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+#category-select {
+    width: 100%;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    background-color: #3a3a3c;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+#filter-btn {
+    width: 100%;
+    /* Removed existing styles to inherit from .categories-btn */
+}
+
+    </style>
+    <style>
+        /* categories.css */
+
+/* Circular Progress Bar Styles */
+.progress-ring {
+    transform: rotate(-90deg);
+}
+
+.progress-ring__circle {
+    stroke-dasharray: 440; /* Circumference: 2 * π * r (r=70) ≈ 440 */
+    stroke-dashoffset: 440;
+    transition: stroke-dashoffset 0.35s, stroke 0.35s;
+}
+
+.circle h2 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: #fff;
+}
+
+.circle-container p {
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+    </style>
+    <style>
+        /* categories.css */
+
+/* Category Colors */
+.category-Food {
+    color: #FF6347; /* Tomato */
+}
+
+.category-Travel {
+    color: #1E90FF; /* Dodger Blue */
+}
+
+.category-Fashion {
+    color: #FFD700; /* Gold */
+}
+
+.category-Entertainment {
+    color: #FF69B4; /* Hot Pink */
+}
+
+.category-Utilities {
+    color: #32CD32; /* Lime Green */
+}
+
+.category-Others {
+    color: #A9A9A9; /* Dark Gray */
+}
+
+    </style>
+
+    <script src="js/categories.js"></script>
+</body>
+</html>
